@@ -10,16 +10,73 @@ const DATA_PROBABILITY = [
 ];
 
 export default function AIAssistant() {
-  const [messages] = useState([
-    // ...
+  const [inputValue, setInputValue] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      role: 'assistant',
+      content: '您好！我是您的智能交易助理。我可以帮您分析项目、检查合规性或生成工程建议。今天有什么可以帮您的？',
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    },
+    {
+      role: 'user',
+      content: '分析当前高新区智慧园区建设招标项目的成功概率。',
+      timestamp: '09:12',
+    },
+    {
+      role: 'assistant',
+      content: '根据近期市场数据及历史类似招标项目分析，该项目的成功中标概率估算如下。竞争对手包括3家甲级资质企业，您的技术得分项优势明显。',
+      showStats: true,
+      timestamp: '09:13',
+    }
   ]);
 
   const handleAction = (action: string) => {
     toast.success(`AI 助理已响应: ${action}`);
   };
 
+  const simulateResponse = (userText: string) => {
+    setIsTyping(true);
+    setTimeout(() => {
+      let response = {
+        role: 'assistant',
+        content: '',
+        showStats: false,
+        showSteps: false,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      if (userText.includes('方案') || userText.includes('工程')) {
+        response.content = '已为您生成初步工程方案。基于 BIM 模型分析，建议在 A 区增加 3% 的冗余配置以应对极端工况。';
+        response.showSteps = true;
+      } else if (userText.includes('概率') || userText.includes('分析')) {
+        response.content = '深度分析完成。您的企业在同类项目中得分为 92/100，当前条件下建议报价浮动控制在 0.5% 以内。';
+        response.showStats = true;
+      } else {
+        response.content = '收到您的消息。正在调取相关历史投标数据与政策法规进行交叉验证中，请稍候。';
+      }
+
+      setMessages(prev => [...prev, response]);
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+    
+    const newUserMsg = {
+      role: 'user',
+      content: inputValue,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessages(prev => [...prev, newUserMsg]);
+    setInputValue('');
+    simulateResponse(inputValue);
+  };
+
   return (
-    <div className="min-h-screen pb-40">
+    <div className="min-h-screen pb-48">
       {/* Chat Canvas */}
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
         {messages.map((msg, i) => (
@@ -35,10 +92,13 @@ export default function AIAssistant() {
             
             <div className={cn(
               "max-w-[85%] space-y-4",
-              msg.role === 'user' ? "bg-gray-100 rounded-3xl rounded-tr-none p-4" : "w-full"
+              msg.role === 'user' ? "bg-[#0D5EFA] text-white rounded-3xl rounded-tr-none p-4 shadow-sm" : "w-full"
             )}>
               {msg.role === 'user' ? (
-                <p className="text-sm leading-relaxed">{msg.content}</p>
+                <div className="space-y-1">
+                  <p className="text-sm leading-relaxed">{msg.content}</p>
+                  <p className="text-[0.6rem] opacity-60 text-right">{msg.timestamp}</p>
+                </div>
               ) : (
                 <div className="space-y-6">
                   {/* Assistant Text Box */}
@@ -54,8 +114,8 @@ export default function AIAssistant() {
                               <PieChart>
                                 <Pie
                                   data={[
-                                    { name: 'success', value: 75 },
-                                    { name: 'others', value: 25 },
+                                    { name: 'success', value: 82 },
+                                    { name: 'others', value: 18 },
                                   ]}
                                   innerRadius={35}
                                   outerRadius={45}
@@ -71,19 +131,19 @@ export default function AIAssistant() {
                               </PieChart>
                             </ResponsiveContainer>
                             <div className="absolute inset-x-0 bottom-4 flex flex-col items-center">
-                               <span className="text-2xl font-black text-[#0048c8]">75%</span>
+                               <span className="text-2xl font-black text-[#0048c8]">82%</span>
                                <span className="text-[0.6rem] font-bold text-gray-400 uppercase tracking-widest">置信度</span>
                             </div>
                           </div>
                         </div>
                         
                         <div className="bg-[#f6f9ff] p-5 rounded-2xl flex flex-col justify-between cursor-pointer" onClick={() => handleAction('查看核心评分详情')}>
-                          <h4 className="text-[0.65rem] font-black text-gray-400 uppercase tracking-widest mb-4">核心评分因素</h4>
+                          <h4 className="text-[0.65rem] font-black text-gray-400 uppercase tracking-widest mb-4">核心评分维度</h4>
                           <div className="space-y-4">
                             {[
-                              { label: '技术资质', value: 90, color: '#0048c8' },
-                              { label: '报价竞争力', value: 65, color: '#0D5EFA' },
-                              { label: '以往业绩', value: 82, color: '#0048c8' },
+                              { label: '技术匹配', value: 92, color: '#0048c8' },
+                              { label: '行业口碑', value: 88, color: '#0D5EFA' },
+                              { label: '合规安全', value: 95, color: '#0048c8' },
                             ].map((factor, i) => (
                               <div key={i} className="space-y-1.5">
                                 <div className="flex justify-between items-center text-[0.65rem] font-bold">
@@ -106,42 +166,41 @@ export default function AIAssistant() {
                       </div>
                     )}
                     
-                    <p className="text-sm leading-relaxed text-gray-600 bg-blue-50/50 p-4 rounded-2xl border-l-4 border-blue-500 cursor-help" onClick={() => handleAction('查看优化建议详情')}>
-                       建议重点优化 <span className="font-bold text-blue-700">**成本控制**</span> 模块，当前市场环境下，价格权重的微调可能将中标率提升至 85% 以上。
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2 mt-6">
-                       <button 
-                         onClick={() => handleAction('查看同类案例')}
-                         className="px-4 py-2 bg-gray-100 rounded-full text-xs font-bold text-gray-600 hover:bg-blue-600 hover:text-white transition-colors"
-                       >
-                         查看同类案例
-                       </button>
-                       <button 
-                         onClick={() => handleAction('调整预算参数')}
-                         className="px-4 py-2 bg-gray-100 rounded-full text-xs font-bold text-gray-600 hover:bg-blue-600 hover:text-white transition-colors"
-                       >
-                         调整预算参数
-                       </button>
+                    <div className="flex justify-between items-center mt-6">
+                      <div className="flex flex-wrap gap-2">
+                        <button 
+                          onClick={() => handleAction('查看同类案例')}
+                          className="px-4 py-2 bg-gray-100 rounded-full text-xs font-bold text-gray-600 hover:bg-blue-600 hover:text-white transition-colors"
+                        >
+                          查看同类案例
+                        </button>
+                        <button 
+                          onClick={() => handleAction('调整预算参数')}
+                          className="px-4 py-2 bg-gray-100 rounded-full text-xs font-bold text-gray-600 hover:bg-blue-600 hover:text-white transition-colors"
+                        >
+                          调整参数
+                        </button>
+                      </div>
+                      <p className="text-[0.6rem] text-gray-400 font-mono">{msg.timestamp}</p>
                     </div>
                   </div>
 
                   {msg.showSteps && (
                     <div className="ml-5 pl-8 border-l-2 border-dashed border-gray-200 space-y-8 py-4">
-                      <div className="relative group cursor-pointer" onClick={() => handleAction('查看资质审核报告')}>
+                      <div className="relative group cursor-pointer" onClick={() => handleAction('合规初验')}>
                         <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/30">
                           <CheckCircle className="w-3 h-3" />
                         </div>
-                        <h4 className="text-sm font-bold">已完成资质初审</h4>
-                        <p className="text-xs text-gray-400 mt-1">系统已核对：壹级建筑智能化资质、安全生产许可证。</p>
+                        <h4 className="text-sm font-bold">已通过合规性扫描</h4>
+                        <p className="text-xs text-gray-400 mt-1">系统已核对全部 14 项必要申报文件。</p>
                       </div>
                       
-                      <div className="relative group cursor-pointer" onClick={() => handleAction('查看生成进度')}>
-                        <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                      <div className="relative group cursor-pointer" onClick={() => handleAction('查看资源详情')}>
+                        <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-blue-100 text-[#0048c8] flex items-center justify-center">
                           <Clock className="w-3 h-3" />
                         </div>
-                        <h4 className="text-sm font-bold text-gray-400 group-hover:text-gray-800 transition-colors">工程方案生成中...</h4>
-                        <p className="text-xs text-gray-300 mt-1">正在基于历史数据构建最优设备布局模型。</p>
+                        <h4 className="text-sm font-bold text-gray-800">资源分配计划建议书</h4>
+                        <p className="text-xs text-gray-400 mt-1">方案已生成，点击可下载详细设备部署清单。</p>
                       </div>
                     </div>
                   )}
@@ -150,12 +209,27 @@ export default function AIAssistant() {
             </div>
             
             {msg.role === 'user' && (
-              <div className="w-10 h-10 rounded-2xl bg-gray-200 flex items-center justify-center text-gray-500 shadow-sm flex-shrink-0 cursor-pointer" onClick={() => handleAction('查看个人资料')}>
+              <div className="w-10 h-10 rounded-2xl bg-gray-200 flex items-center justify-center text-gray-500 shadow-sm flex-shrink-0 cursor-pointer" onClick={() => handleAction('个人资料')}>
                 <User className="w-6 h-6" />
               </div>
             )}
           </div>
         ))}
+
+        {isTyping && (
+          <div className="flex items-start gap-4 animate-pulse">
+            <div className="w-10 h-10 rounded-2xl bg-gray-200 flex items-center justify-center text-gray-400 flex-shrink-0">
+              <Bot className="w-6 h-6" />
+            </div>
+            <div className="bg-white rounded-3xl rounded-tl-none p-4 shadow-sm border border-gray-100">
+              <div className="flex gap-1">
+                <div className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce"></div>
+                <div className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce delay-75"></div>
+                <div className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce delay-150"></div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Input Area */}
@@ -180,7 +254,7 @@ export default function AIAssistant() {
           
           <div className="bg-white/90 backdrop-blur-xl p-3 rounded-[2.5rem] shadow-2xl border border-gray-100 flex items-center gap-2 group focus-within:ring-4 ring-blue-500/10 transition-all">
             <button 
-              onClick={() => handleAction('添加附件或截图')}
+              onClick={() => handleAction('添加附件')}
               className="w-12 h-12 flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
             >
               <PlusCircle className="w-6 h-6" />
@@ -188,13 +262,16 @@ export default function AIAssistant() {
             <input 
                className="flex-1 bg-transparent border-none focus:ring-0 text-sm py-4 h-full placeholder:text-gray-400 font-medium" 
                placeholder="向 AI 助理提问关于项目的问题..." 
+               value={inputValue}
+               onChange={(e) => setInputValue(e.target.value)}
                onKeyDown={(e) => {
-                 if (e.key === 'Enter') handleAction(`发送消息: ${e.currentTarget.value}`);
+                 if (e.key === 'Enter') handleSend();
                }}
             />
             <button 
-              onClick={() => handleAction('发送消息')}
-              className="w-12 h-12 bg-gradient-to-br from-[#0048c8] to-[#0d5efa] rounded-[1.5rem] flex items-center justify-center text-white shadow-lg active:scale-95 transition-all"
+              onClick={handleSend}
+              disabled={isTyping}
+              className="w-12 h-12 bg-gradient-to-br from-[#0048c8] to-[#0d5efa] rounded-[1.5rem] flex items-center justify-center text-white shadow-lg active:scale-95 transition-all disabled:opacity-50"
             >
               <Send className="w-5 h-5" />
             </button>

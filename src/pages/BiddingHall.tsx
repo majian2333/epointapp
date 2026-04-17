@@ -3,7 +3,72 @@ import { cn } from '../lib/utils';
 import toast from 'react-hot-toast';
 
 const PROJECTS_EXTENDED = [
-  // ... (existing data)
+  {
+    id: 'hall-1',
+    title: 'G320国道高架快速化改造工程二期项目',
+    price: '¥1.2B',
+    description: '本项目包含全长12公里的高架路段建设及底层道路修复，涉及复杂的地下管线迁改与多节点桥梁施工。',
+    deadline: '2024.12.15',
+    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=800&auto=format&fit=crop',
+    tags: ['正在招标', '基础设施'],
+    file: '招标技术规范书_V2.1.pdf',
+    fileSize: '42.5 MB'
+  },
+  {
+    id: 'hall-2',
+    title: '高新科技园区智慧化运营系统二期集成项目',
+    price: '¥45.8M',
+    description: '针对核心区30万平米办公楼宇进行物联网升级，实现全域能耗监控与AI辅助运维管理系统集成。',
+    deadline: '2024.11.30',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
+    tags: ['新招标', '城市更新'],
+    file: '系统拓扑结构及预算明细.xlsx',
+    fileSize: '12.8 MB'
+  },
+  {
+    id: 'hall-3',
+    title: '新城区中心医院医疗影像设备采购项目',
+    price: '¥85.0M',
+    description: '采购包含3.0T核磁共振、超高端CT在内的全套影像设备，需负责后续5年的维保服务。',
+    deadline: '2025.01.10',
+    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=800&auto=format&fit=crop',
+    tags: ['医疗设备', '公开招标'],
+    file: '采购清单及性能指标要求.pdf',
+    fileSize: '8.4 MB'
+  },
+  {
+    id: 'hall-4',
+    title: '沿海防灾减灾生态修复三期工程',
+    price: '¥320.0M',
+    description: '涵盖8公里的海岸线红树林种植、海堤加固及生态景观廊道建设，强调生物多样性保护。',
+    deadline: '2024.12.28',
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop',
+    tags: ['生态环境', '绿色项目'],
+    file: '生态评估报告及施工导则.zip',
+    fileSize: '156.0 MB'
+  },
+  {
+    id: 'hall-5',
+    title: '智慧政务云平台大数据算力节点扩容',
+    price: '¥12.5M',
+    description: '为满足政务大模型运行需求，对现有云算力中心进行硬件扩容及网络带宽升级。',
+    deadline: '2024.11.25',
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=800&auto=format&fit=crop',
+    tags: ['算力扩容', '紧急采购'],
+    file: '硬件规格说明书.docx',
+    fileSize: '5.2 MB'
+  },
+  {
+    id: 'hall-6',
+    title: '历史文化街区古建筑修缮与数字化存档',
+    price: '¥68.4M',
+    description: '对34处重点文保单位进行修缮，并利用激光雷达扫描技术建立高精度3D数字档案馆。',
+    deadline: '2025.02.15',
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop',
+    tags: ['文化保护', '数字遗产'],
+    file: '文保修缮规范及扫描要求.pdf',
+    fileSize: '24.1 MB'
+  }
 ];
 
 export default function BiddingHall() {
