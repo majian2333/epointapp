@@ -7,7 +7,7 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <Landmark className="text-[#0D5EFA] w-6 h-6" />
           <h1 className="text-xl font-black bg-gradient-to-br from-[#0048c8] to-[#0d5efa] bg-clip-text text-transparent">
-            权威交易中心
+            公共资源交易中心
           </h1>
         </div>
         <div className="flex items-center gap-2">

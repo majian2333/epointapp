@@ -1,7 +1,12 @@
-import { CheckCircle2, AlertCircle, Clock, Plus, ChevronRight, Cpu } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Clock, Plus, ChevronRight, Cpu, Landmark as LandMark } from 'lucide-react';
 import { cn } from '../lib/utils';
+import toast from 'react-hot-toast';
 
 export default function MyBids() {
+  const handleAction = (action: string) => {
+    toast.success(`您点击了: ${action}`);
+  };
+
   return (
     <div className="px-4 py-8 space-y-8">
       {/* Header & Tabs */}
@@ -11,10 +16,16 @@ export default function MyBids() {
           <p className="text-gray-500 text-sm">管理您正在参与的资源交易项目与历史投标记录</p>
         </div>
         <div className="flex bg-gray-100 p-1.5 rounded-2xl w-fit">
-          <button className="px-6 py-2 rounded-xl bg-white text-[#0D5EFA] font-bold text-sm shadow-sm">
+          <button 
+            onClick={() => handleAction('切换到进行中项目')}
+            className="px-6 py-2 rounded-xl bg-white text-[#0D5EFA] font-bold text-sm shadow-sm"
+          >
             进行中 (4)
           </button>
-          <button className="px-6 py-2 rounded-xl text-gray-500 font-medium text-sm hover:bg-gray-200 transition-colors">
+          <button 
+            onClick={() => handleAction('切换到历史记录')}
+            className="px-6 py-2 rounded-xl text-gray-500 font-medium text-sm hover:bg-gray-200 transition-colors"
+          >
             历史记录
           </button>
         </div>
@@ -38,7 +49,7 @@ export default function MyBids() {
             </div>
             
             {/* Step Progress */}
-            <div className="relative py-8 px-4">
+            <div className="relative py-8 px-4" onClick={() => handleAction('查看具体评分进度')}>
               <div className="absolute top-1/2 left-0 w-full h-[2px] bg-gray-100 -translate-y-1/2 rounded-full"></div>
               <div className="absolute top-1/2 left-0 w-2/3 h-[2px] bg-blue-500 -translate-y-1/2 rounded-full"></div>
               
@@ -65,7 +76,10 @@ export default function MyBids() {
                 <p className="text-gray-400 text-[0.65rem] uppercase tracking-wider font-bold">当前出价</p>
                 <p className="text-2xl font-black text-blue-600 font-mono">¥4,820,000.00</p>
               </div>
-              <button className="bg-gradient-to-br from-[#0048c8] to-[#0d5efa] text-white px-6 py-3 rounded-2xl font-bold text-sm hover:shadow-lg active:scale-95 transition-all">
+              <button 
+                onClick={() => handleAction('查看朝阳区项目详情')}
+                className="bg-gradient-to-br from-[#0048c8] to-[#0d5efa] text-white px-6 py-3 rounded-2xl font-bold text-sm hover:shadow-lg active:scale-95 transition-all"
+              >
                 查看详情
               </button>
             </div>
@@ -86,21 +100,27 @@ export default function MyBids() {
             </div>
             
             <div className="grid grid-cols-2 gap-4 bg-gray-50 p-5 rounded-2xl">
-              <div className="space-y-1">
+              <div className="space-y-1 text-center">
                 <p className="text-gray-400 text-[0.65rem] uppercase tracking-wider font-bold">截标时间</p>
-                <p className="text-sm font-bold">2023-11-28 10:00</p>
+                <p className="text-sm font-bold">2024-11-28 10:00</p>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 text-center">
                 <p className="text-gray-400 text-[0.65rem] uppercase tracking-wider font-bold">投标倒计时</p>
                 <p className="text-sm font-bold text-red-600 animate-pulse">02天 : 14时 : 45分</p>
               </div>
             </div>
 
             <div className="mt-6 flex gap-3">
-              <button className="flex-1 bg-gray-100 text-blue-600 px-5 py-3 rounded-2xl font-bold text-sm hover:bg-gray-200 transition-all">
+              <button 
+                onClick={() => handleAction('更新海淀区项目报价')}
+                className="flex-1 bg-gray-100 text-blue-600 px-5 py-3 rounded-2xl font-bold text-sm hover:bg-gray-200 transition-all"
+              >
                 更新报价
               </button>
-              <button className="flex-1 bg-gradient-to-br from-[#0048c8] to-[#0d5efa] text-white px-5 py-3 rounded-2xl font-bold text-sm shadow-md transition-all active:scale-95">
+              <button 
+                onClick={() => handleAction('完善海淀区项目附件')}
+                className="flex-1 bg-gradient-to-br from-[#0048c8] to-[#0d5efa] text-white px-5 py-3 rounded-2xl font-bold text-sm shadow-md transition-all active:scale-95"
+              >
                 完善附件
               </button>
             </div>
@@ -109,7 +129,10 @@ export default function MyBids() {
 
         {/* Wizard Column */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-3xl p-8 border border-blue-100/50 shadow-sm border-dashed border-2 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-blue-50/10 transition-colors">
+          <div 
+            onClick={() => handleAction('启动投标助手 - 创建新投标')}
+            className="bg-white rounded-3xl p-8 border border-blue-100/50 shadow-sm border-dashed border-2 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-blue-50/10 transition-colors"
+          >
             <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-[#0D5EFA] group-hover:scale-110 transition-transform">
               <Plus className="w-8 h-8" />
             </div>
@@ -126,7 +149,10 @@ export default function MyBids() {
               <p className="text-blue-100 text-sm mt-2 leading-relaxed opacity-80">
                 根据历史成交数据深度学习，为您提升 15% 以上的中标概率。
               </p>
-              <button className="mt-8 bg-white text-blue-600 px-8 py-3 rounded-2xl font-bold text-sm shadow-xl active:scale-95 transition-all">
+              <button 
+                onClick={() => handleAction('启动 AI 投标优化流程')}
+                className="mt-8 bg-white text-blue-600 px-8 py-3 rounded-2xl font-bold text-sm shadow-xl active:scale-95 transition-all"
+              >
                 立即开始投标
               </button>
             </div>
@@ -138,14 +164,17 @@ export default function MyBids() {
 
           <section className="space-y-4">
             <h3 className="text-lg font-bold">最近成交</h3>
-            <div className="bg-white rounded-2xl p-4 border border-gray-100 flex items-center justify-between group cursor-pointer hover:bg-gray-50 transition-colors">
+            <div 
+              onClick={() => handleAction('查看成交记录详情')}
+              className="bg-white rounded-2xl p-4 border border-gray-100 flex items-center justify-between group cursor-pointer hover:bg-gray-50 transition-colors"
+            >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm">
-                   <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=200" className="w-full h-full object-cover" />
+                   <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=200" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 </div>
                 <div>
                   <p className="text-sm font-bold truncate max-w-[120px]">通州区智慧医疗...</p>
-                  <p className="text-[0.65rem] text-gray-400">2023-10-15</p>
+                  <p className="text-[0.65rem] text-gray-400">2024-03-15</p>
                 </div>
               </div>
               <div className="text-right flex items-center gap-2">
@@ -162,5 +191,3 @@ export default function MyBids() {
     </div>
   );
 }
-
-import { Landmark as LandMark } from 'lucide-react';

@@ -1,30 +1,86 @@
-import { motion } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Gavel, ShoppingCart, Landmark, ArrowRight, Ruler, FileCheck, Calculator } from 'lucide-react';
 import { PROJECTS, BID_STATUSES } from '../constants';
 import { cn } from '../lib/utils';
+import toast from 'react-hot-toast';
+
+const CAROUSEL_SLIDES = [
+  {
+    tag: '行业动态',
+    title: '2024年度基础设施项目工程技术新标准发布',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop'
+  },
+  {
+    tag: '政策导向',
+    title: '数字化转型补贴政策正式进入申请阶段',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop'
+  },
+  {
+    tag: '热门招标',
+    title: '新区智慧交通系统建设项目已开启预报名',
+    image: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop'
+  }
+];
 
 export default function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleAction = (action: string) => {
+    toast.success(`您点击了: ${action}`);
+  };
+
   return (
     <div className="px-4 py-6 space-y-10">
       {/* News Carousel Section */}
       <section className="relative overflow-hidden rounded-2xl h-48 md:h-64 shadow-sm group cursor-pointer">
-        <div 
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop')" }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 p-6 w-full">
-          <span className="bg-[#0D5EFA] px-2 py-1 text-[0.625rem] font-bold text-white rounded uppercase tracking-widest">
-            行业动态
-          </span>
-          <h2 className="text-white text-xl md:text-2xl font-bold mt-2 leading-tight">
-            2024年度基础设施项目工程技术新标准发布
-          </h2>
-          <div className="flex gap-2 mt-4">
-            <div className="w-8 h-1 bg-white rounded-full"></div>
-            <div className="w-2 h-1 bg-white/40 rounded-full"></div>
-            <div className="w-2 h-1 bg-white/40 rounded-full"></div>
-          </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+            onClick={() => handleAction(CAROUSEL_SLIDES[currentSlide].title)}
+          >
+            <div 
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
+              style={{ backgroundImage: `url('${CAROUSEL_SLIDES[currentSlide].image}')` }}
+            ></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 p-6 w-full">
+              <span className="bg-[#0D5EFA] px-2 py-1 text-[0.625rem] font-bold text-white rounded uppercase tracking-widest">
+                {CAROUSEL_SLIDES[currentSlide].tag}
+              </span>
+              <h2 className="text-white text-xl md:text-2xl font-bold mt-2 leading-tight">
+                {CAROUSEL_SLIDES[currentSlide].title}
+              </h2>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+        
+        <div className="absolute bottom-4 right-6 flex gap-2 z-10 transition-opacity">
+          {CAROUSEL_SLIDES.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentSlide(idx);
+              }}
+              className={cn(
+                "h-1.5 transition-all rounded-full",
+                currentSlide === idx ? "w-8 bg-white" : "w-1.5 bg-white/40"
+              )}
+            />
+          ))}
         </div>
       </section>
 
@@ -35,14 +91,21 @@ export default function Home() {
             <h3 className="text-xl font-bold tracking-tight">AI 推荐项目</h3>
             <p className="text-gray-500 text-sm mt-1">基于您的企业投标历史精准推送</p>
           </div>
-          <button className="text-[#0D5EFA] font-bold text-sm hover:underline flex items-center gap-1 group">
+          <button 
+            onClick={() => handleAction('查看全部推荐项目')}
+            className="text-[#0D5EFA] font-bold text-sm hover:underline flex items-center gap-1 group"
+          >
             查看全部 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {PROJECTS.map((project) => (
-            <div key={project.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+            <div 
+              key={project.id} 
+              onClick={() => handleAction(`项目详情: ${project.title}`)}
+              className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+            >
               <div>
                 <div className="flex justify-between items-start mb-6">
                   <div className={cn(
@@ -84,7 +147,10 @@ export default function Home() {
       <section className="space-y-4">
         <h3 className="text-xl font-bold tracking-tight">企业常用操作</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-[1px] rounded-2xl bg-gradient-to-br from-[#0048c8] to-[#0d5efa] shadow-sm hover:shadow-lg transition-all cursor-pointer group">
+          <div 
+            onClick={() => handleAction('工程类投标')}
+            className="p-[1px] rounded-2xl bg-gradient-to-br from-[#0048c8] to-[#0d5efa] shadow-sm hover:shadow-lg transition-all cursor-pointer group"
+          >
             <div className="bg-white w-full h-full p-5 rounded-[15px] group-hover:bg-transparent transition-colors duration-300">
               <div className="flex items-center gap-4">
                 <Ruler className="text-[#0D5EFA] group-hover:text-white transition-colors" />
@@ -96,7 +162,10 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 hover:bg-gray-50 hover:border-blue-100 transition-all cursor-pointer shadow-sm">
+          <div 
+            onClick={() => handleAction('采购类报价')}
+            className="bg-white p-5 rounded-2xl border border-gray-100 hover:bg-gray-50 hover:border-blue-100 transition-all cursor-pointer shadow-sm"
+          >
             <div className="flex items-center gap-4">
               <FileCheck className="text-blue-500" />
               <div>
@@ -106,7 +175,10 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 hover:bg-gray-50 hover:border-blue-100 transition-all cursor-pointer shadow-sm">
+          <div 
+            onClick={() => handleAction('资产估值')}
+            className="bg-white p-5 rounded-2xl border border-gray-100 hover:bg-gray-50 hover:border-blue-100 transition-all cursor-pointer shadow-sm"
+          >
             <div className="flex items-center gap-4">
               <Calculator className="text-blue-500" />
               <div>
@@ -122,7 +194,10 @@ export default function Home() {
       <section className="bg-blue-50/30 rounded-2xl p-6 border border-blue-100/20">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-bold">近期投标状态</h3>
-          <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors shadow-sm">
+          <button 
+            onClick={() => handleAction('查看筛选选项')}
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors shadow-sm"
+          >
             <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
             </svg>
@@ -130,7 +205,11 @@ export default function Home() {
         </div>
         <div className="space-y-3">
           {BID_STATUSES.map((bid) => (
-            <div key={bid.id} className="bg-white p-4 rounded-xl flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-md hover:bg-blue-50/50 transition-all cursor-pointer group">
+            <div 
+              key={bid.id} 
+              onClick={() => handleAction(`投标状态详情: ${bid.title}`)}
+              className="bg-white p-4 rounded-xl flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-md hover:bg-blue-50/50 transition-all cursor-pointer group"
+            >
               <div className="flex items-center gap-4">
                 <div 
                   className="w-1.5 h-10 rounded-full"

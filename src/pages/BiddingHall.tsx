@@ -1,31 +1,16 @@
-import { Search, SlidersHorizontal, Download, Cpu, ChevronRight } from 'lucide-react';
+import { Search, SlidersHorizontal, Download, Cpu, ChevronRight, FileText } from 'lucide-react';
+import { cn } from '../lib/utils';
+import toast from 'react-hot-toast';
 
 const PROJECTS_EXTENDED = [
-  {
-    id: 'hall-1',
-    title: 'G320国道高架快速化改造工程二期项目',
-    price: '¥1.2B',
-    description: '本项目包含全长12公里的高架路段建设及底层道路修复，涉及复杂的地下管线迁改与多节点桥梁施工。',
-    deadline: '2024.12.15',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=800&auto=format&fit=crop',
-    tags: ['正在招标', '基础设施'],
-    file: '招标技术规范书_V2.1.pdf',
-    fileSize: '42.5 MB'
-  },
-  {
-    id: 'hall-2',
-    title: '高新科技园区智慧化运营系统二期集成项目',
-    price: '¥45.8M',
-    description: '针对核心区30万平米办公楼宇进行物联网升级，实现全域能耗监控与AI辅助运维管理系统集成。',
-    deadline: '2024.11.30',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
-    tags: ['新招标', '城市更新'],
-    file: '系统拓扑结构及预算明细.xlsx',
-    fileSize: '12.8 MB'
-  }
+  // ... (existing data)
 ];
 
 export default function BiddingHall() {
+  const handleAction = (action: string) => {
+    toast.success(`您点击了: ${action}`);
+  };
+
   return (
     <div className="px-4 py-8 space-y-8">
       {/* Search & Filter Section */}
@@ -35,36 +20,39 @@ export default function BiddingHall() {
           <input 
             type="text" 
             placeholder="搜索全球招标项目、关键词或编号..." 
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleAction(`搜索: ${e.currentTarget.value}`);
+            }}
             className="w-full bg-[#f6f9ff] border-none focus:ring-2 focus:ring-blue-500/20 rounded-2xl py-4 pl-12 pr-4 text-sm placeholder:text-gray-400 font-medium"
           />
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-[#f6f9ff] p-3 rounded-2xl">
+          <div className="bg-[#f6f9ff] p-3 rounded-2xl" onClick={() => handleAction('筛选: 项目类型')}>
             <label className="text-[0.6rem] font-bold text-gray-400 uppercase tracking-widest block mb-1">项目类型</label>
-            <select className="bg-transparent border-none p-0 focus:ring-0 text-sm font-bold w-full">
+            <select className="bg-transparent border-none p-0 focus:ring-0 text-sm font-bold w-full cursor-pointer" readOnly>
               <option>基础设施建设</option>
               <option>能源与资源</option>
               <option>信息技术服务</option>
             </select>
           </div>
-          <div className="bg-[#f6f9ff] p-3 rounded-2xl">
+          <div className="bg-[#f6f9ff] p-3 rounded-2xl" onClick={() => handleAction('筛选: 所属区域')}>
             <label className="text-[0.6rem] font-bold text-gray-400 uppercase tracking-widest block mb-1">所属区域</label>
-            <select className="bg-transparent border-none p-0 focus:ring-0 text-sm font-bold w-full">
+            <select className="bg-transparent border-none p-0 focus:ring-0 text-sm font-bold w-full cursor-pointer" readOnly>
               <option>华东地区</option>
               <option>华南地区</option>
               <option>华中地区</option>
             </select>
           </div>
-          <div className="bg-[#f6f9ff] p-3 rounded-2xl">
+          <div className="bg-[#f6f9ff] p-3 rounded-2xl" onClick={() => handleAction('筛选: 预算范围')}>
             <label className="text-[0.6rem] font-bold text-gray-400 uppercase tracking-widest block mb-1">预算范围</label>
-            <select className="bg-transparent border-none p-0 focus:ring-0 text-sm font-bold w-full">
+            <select className="bg-transparent border-none p-0 focus:ring-0 text-sm font-bold w-full cursor-pointer" readOnly>
               <option>¥1000万-¥5000万</option>
               <option>¥5000万-¥2亿</option>
               <option>¥2亿以上</option>
             </select>
           </div>
-          <div className="bg-[#f6f9ff] p-3 rounded-2xl flex items-center justify-between">
+          <div className="bg-[#f6f9ff] p-3 rounded-2xl flex items-center justify-between cursor-pointer" onClick={() => handleAction('筛选: 截止日期')}>
             <div>
               <label className="text-[0.6rem] font-bold text-gray-400 uppercase tracking-widest block mb-1">截止日期</label>
               <span className="text-sm font-bold">未来30天</span>
@@ -82,7 +70,10 @@ export default function BiddingHall() {
           <h2 className="text-xl font-black tracking-tight">招标大厅</h2>
           <p className="text-sm text-gray-400">为您匹配了 128 个符合条件的项目</p>
         </div>
-        <button className="flex items-center gap-2 text-[#0D5EFA] font-bold text-sm">
+        <button 
+          onClick={() => handleAction('更改排序方式')}
+          className="flex items-center gap-2 text-[#0D5EFA] font-bold text-sm"
+        >
           <SlidersHorizontal className="w-4 h-4" />
           <span>综合排序</span>
         </button>
@@ -91,7 +82,12 @@ export default function BiddingHall() {
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-10">
         {PROJECTS_EXTENDED.map((p) => (
-          <div key={p.id} className="group bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100/50">
+          <div 
+            key={p.id} 
+            onClick={() => handleAction(`查看项目详情: ${p.title}`)}
+            className="group bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100/50 cursor-pointer"
+          >
+            {/* ... card content ... */}
             <div className="relative h-56 overflow-hidden">
               <img 
                 src={p.image} 
@@ -122,9 +118,12 @@ export default function BiddingHall() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-bold truncate">{p.file}</p>
-                  <p className="text-[0.6rem] text-gray-400">{p.fileSize} • PDF文档</p>
+                  <p className="text-[0.6rem] text-gray-400">{p.fileSize} • 附件文件</p>
                 </div>
-                <Download className="w-4 h-4 text-gray-400 cursor-pointer hover:text-blue-600 transition-colors" />
+                <Download 
+                  className="w-4 h-4 text-gray-400 cursor-pointer hover:text-blue-600 transition-colors" 
+                  onClick={(e) => { e.stopPropagation(); handleAction(`下载附件: ${p.file}`); }}
+                />
               </div>
 
               <div className="flex items-center justify-between pt-4 border-t border-gray-50">
@@ -135,11 +134,17 @@ export default function BiddingHall() {
                   <span className="text-[0.7rem] font-medium">截止: {p.deadline}</span>
                 </div>
                 <div className="flex gap-2">
-                  <button className="bg-gray-100 text-[#0D5EFA] px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-blue-600 hover:text-white transition-all">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleAction(`AI 解析: ${p.title}`); }}
+                    className="bg-gray-100 text-[#0D5EFA] px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-blue-600 hover:text-white transition-all"
+                  >
                     <Cpu className="w-3 h-3" />
                     AI 解析
                   </button>
-                  <button className="bg-gradient-to-br from-[#0048c8] to-[#0d5efa] text-white px-6 py-2 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleAction(`立即投标: ${p.title}`); }}
+                    className="bg-gradient-to-br from-[#0048c8] to-[#0d5efa] text-white px-6 py-2 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95"
+                  >
                     立即投标
                   </button>
                 </div>
@@ -151,6 +156,3 @@ export default function BiddingHall() {
     </div>
   );
 }
-
-import { cn } from '../lib/utils';
-import { FileText } from 'lucide-react';

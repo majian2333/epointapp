@@ -1,6 +1,6 @@
 {
-  "name": "权威交易中心",
-  "description": "专为投标人打造的权威资源交易平台，集成 AI 辅助分析、全流程投标管理与实时市场动态。",
+  "name": "公共资源交易中心",
+  "description": "专为投标人打造的公共资源交易平台，集成 AI 辅助分析、全流程投标管理与实时市场动态。",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

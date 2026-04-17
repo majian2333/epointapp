@@ -7,6 +7,8 @@ import AIAssistant from './pages/AIAssistant';
 import Profile from './pages/Profile';
 import { Page } from './types';
 
+import { Toaster } from 'react-hot-toast';
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
 
@@ -34,6 +36,7 @@ export default function App() {
 
   return (
     <Layout currentPage={currentPage} onPageChange={setCurrentPage}>
+      <Toaster position="top-center" reverseOrder={false} />
       {renderPage()}
     </Layout>
   );

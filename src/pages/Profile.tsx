@@ -1,7 +1,12 @@
-import { Shield, Verified, FileText, Landmark, Settings, ChevronRight, Crown, History } from 'lucide-react';
+import { Shield, Verified, FileText, Landmark, Settings, ChevronRight, Crown, History, PlusCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
+import toast from 'react-hot-toast';
 
 export default function Profile() {
+  const handleAction = (action: string) => {
+    toast.success(`正在进入: ${action}`);
+  };
+
   const credentials = [
     { id: 1, title: '施工资质甲级', desc: '有效期至 2025年12月', status: '已认证', icon: FileText },
     { id: 2, title: '法定投标授权', desc: '国家级认证', status: '已认证', icon: Landmark },
@@ -13,11 +18,14 @@ export default function Profile() {
       {/* Profile Header Block */}
       <section className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Main Info Card */}
-        <div className="md:col-span-4 bg-white p-8 rounded-3xl shadow-[0_4px_32px_rgba(13,94,250,0.03)] border border-blue-50/50 flex flex-col items-center text-center">
+        <div 
+          onClick={() => handleAction('个人详情编辑')}
+          className="md:col-span-4 bg-white p-8 rounded-3xl shadow-[0_4px_32px_rgba(13,94,250,0.03)] border border-blue-50/50 flex flex-col items-center text-center cursor-pointer hover:border-blue-200 transition-all"
+        >
           <div className="relative mb-6">
             <div className="w-32 h-32 rounded-full ring-8 ring-blue-50 overflow-hidden shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=300&auto=format&fit=crop" 
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=300" 
                 className="w-full h-full object-cover" 
                 referrerPolicy="no-referrer"
               />
@@ -30,11 +38,11 @@ export default function Profile() {
           <p className="text-gray-400 text-sm mt-1 uppercase tracking-widest font-bold">机构投标总监</p>
           
           <div className="mt-8 pt-8 border-t border-gray-50 flex justify-around w-full">
-            <div>
+            <div className="cursor-help" onClick={(e) => { e.stopPropagation(); handleAction('进行中投标列表'); }}>
               <p className="text-2xl font-black text-blue-600">128</p>
               <p className="text-[0.6rem] uppercase tracking-widest text-gray-400 font-bold mt-1">进行中投标</p>
             </div>
-            <div>
+            <div className="cursor-help" onClick={(e) => { e.stopPropagation(); handleAction('中标率统计详情'); }}>
               <p className="text-2xl font-black text-blue-600">94%</p>
               <p className="text-[0.6rem] uppercase tracking-widest text-gray-400 font-bold mt-1">中标率</p>
             </div>
@@ -46,7 +54,11 @@ export default function Profile() {
           {credentials.map((cred) => {
             const Icon = cred.icon;
             return (
-              <div key={cred.id} className="bg-white p-6 rounded-3xl flex items-start gap-4 hover:shadow-xl transition-all cursor-pointer border border-gray-100/50 group">
+              <div 
+                key={cred.id} 
+                onClick={() => handleAction(`资质核验: ${cred.title}`)}
+                className="bg-white p-6 rounded-3xl flex items-start gap-4 hover:shadow-xl transition-all cursor-pointer border border-gray-100/50 group"
+              >
                 <div className="p-4 bg-blue-50 rounded-2xl text-[#0D5EFA] group-hover:bg-[#0D5EFA] group-hover:text-white transition-all duration-300">
                   <Icon className="w-6 h-6" />
                 </div>
@@ -61,7 +73,10 @@ export default function Profile() {
             );
           })}
           
-          <div className="bg-gradient-to-br from-[#0048c8] to-[#0d5efa] p-6 rounded-3xl flex items-center justify-center gap-2 cursor-pointer hover:shadow-blue-200 transition-all shadow-xl shadow-blue-500/10 group">
+          <div 
+            onClick={() => handleAction('添加新资质')}
+            className="bg-gradient-to-br from-[#0048c8] to-[#0d5efa] p-6 rounded-3xl flex items-center justify-center gap-2 cursor-pointer hover:shadow-blue-200 transition-all shadow-xl shadow-blue-500/10 group active:scale-95"
+          >
             <PlusCircle className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
             <span className="text-white font-black tracking-tight">添加资质</span>
           </div>
@@ -79,7 +94,7 @@ export default function Profile() {
           {/* Notifications */}
           <div className="space-y-6">
             <h3 className="text-xs font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50 pb-2">通知设置</h3>
-            <div className="flex items-center justify-between group cursor-pointer">
+            <div className="flex items-center justify-between group cursor-pointer" onClick={() => handleAction('投标状态提醒设置')}>
               <div>
                 <p className="font-bold text-gray-700">投标状态提醒</p>
                 <p className="text-xs text-gray-400 mt-1">实时获取活动交易的更新</p>
@@ -89,7 +104,7 @@ export default function Profile() {
               </div>
             </div>
             
-            <div className="flex items-center justify-between group cursor-pointer opacity-50">
+            <div className="flex items-center justify-between group cursor-pointer opacity-50" onClick={() => handleAction('开启市场分析报告')}>
               <div>
                 <p className="font-bold text-gray-700">市场分析报告</p>
                 <p className="text-xs text-gray-400 mt-1">每周建筑行业简报</p>
@@ -103,7 +118,7 @@ export default function Profile() {
           {/* Subscriptions */}
           <div className="space-y-6">
             <h3 className="text-xs font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50 pb-2">行业订阅</h3>
-            <div className="bg-gray-50 p-4 rounded-2xl flex items-center justify-between hover:bg-gray-100 transition-colors cursor-pointer">
+            <div onClick={() => handleAction('公共基础设施订阅管理')} className="bg-gray-50 p-4 rounded-2xl flex items-center justify-between hover:bg-gray-100 transition-colors cursor-pointer">
               <div className="flex items-center gap-4">
                 <div className="p-2 bg-white rounded-xl">
                   <Landmark className="w-4 h-4 text-blue-600" />
@@ -116,7 +131,7 @@ export default function Profile() {
               <ChevronRight className="w-4 h-4 text-gray-300" />
             </div>
             
-             <div className="bg-gray-50 p-4 rounded-2xl flex items-center justify-between hover:bg-gray-100 transition-colors cursor-pointer">
+             <div onClick={() => handleAction('绿色能源交易订阅管理')} className="bg-gray-50 p-4 rounded-2xl flex items-center justify-between hover:bg-gray-100 transition-colors cursor-pointer">
               <div className="flex items-center gap-4">
                 <div className="p-2 bg-green-50 rounded-xl">
                   <Verified className="w-4 h-4 text-green-600" />
@@ -149,7 +164,10 @@ export default function Profile() {
                 兑换积分以获取 AI 高级投标洞察、技术标书自动生成或 1v1 专家咨询服务。
               </p>
             </div>
-            <button className="mt-10 bg-white text-blue-900 px-8 py-3.5 rounded-2xl font-black text-sm shadow-2xl hover:bg-blue-50 transition-all active:scale-95 self-start">
+            <button 
+              onClick={() => handleAction('积分兑换商城')}
+              className="mt-10 bg-white text-blue-900 px-8 py-3.5 rounded-2xl font-black text-sm shadow-2xl hover:bg-blue-50 transition-all active:scale-95 self-start"
+            >
               立即兑换权益
             </button>
           </div>
@@ -166,13 +184,16 @@ export default function Profile() {
               '了解投标评分逻辑',
               '2024 年积分兑换政策'
             ].map((q, i) => (
-              <div key={i} className="bg-white p-5 rounded-2xl flex items-center justify-between hover:bg-blue-50 transition-all cursor-pointer shadow-sm group">
+              <div key={i} onClick={() => handleAction(`帮助: ${q}`)} className="bg-white p-5 rounded-2xl flex items-center justify-between hover:bg-blue-50 transition-all cursor-pointer shadow-sm group">
                 <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">{q}</span>
                 <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-blue-600 transition-colors" />
               </div>
             ))}
           </div>
-          <button className="w-full pt-4 text-[0.6rem] font-black text-blue-600 uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:underline">
+          <button 
+            onClick={() => handleAction('查看所有帮助主题')}
+            className="w-full pt-4 text-[0.6rem] font-black text-blue-600 uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:underline"
+          >
             查看所有帮助主题 <PlusCircle className="w-3 h-3" />
           </button>
         </div>
@@ -180,5 +201,3 @@ export default function Profile() {
     </div>
   );
 }
-
-import { PlusCircle } from 'lucide-react';
