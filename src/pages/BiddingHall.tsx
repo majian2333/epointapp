@@ -1,4 +1,4 @@
-import { Search, SlidersHorizontal, Download, Cpu, ChevronRight, FileText } from 'lucide-react';
+import { Search, SlidersHorizontal, Download, Cpu, ChevronRight, FileText, Ruler, Landmark, HeartPulse, Cloud, ShoppingCart, Gavel } from 'lucide-react';
 import { cn } from '../lib/utils';
 import toast from 'react-hot-toast';
 
@@ -6,10 +6,11 @@ const PROJECTS_EXTENDED = [
   {
     id: 'hall-1',
     title: 'G320国道高架快速化改造工程二期项目',
+    icon: Ruler,
     price: '¥1.2B',
     description: '本项目包含全长12公里的高架路段建设及底层道路修复，涉及复杂的地下管线迁改与多节点桥梁施工。',
     deadline: '2024.12.15',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1590487988256-9ed24133863e?q=80&w=800&auto=format&fit=crop',
     tags: ['正在招标', '基础设施'],
     file: '招标技术规范书_V2.1.pdf',
     fileSize: '42.5 MB'
@@ -17,6 +18,7 @@ const PROJECTS_EXTENDED = [
   {
     id: 'hall-2',
     title: '高新科技园区智慧化运营系统二期集成项目',
+    icon: ShoppingCart,
     price: '¥45.8M',
     description: '针对核心区30万平米办公楼宇进行物联网升级，实现全域能耗监控与AI辅助运维管理系统集成。',
     deadline: '2024.11.30',
@@ -28,6 +30,7 @@ const PROJECTS_EXTENDED = [
   {
     id: 'hall-3',
     title: '新城区中心医院医疗影像设备采购项目',
+    icon: HeartPulse,
     price: '¥85.0M',
     description: '采购包含3.0T核磁共振、超高端CT在内的全套影像设备，需负责后续5年的维保服务。',
     deadline: '2025.01.10',
@@ -39,6 +42,7 @@ const PROJECTS_EXTENDED = [
   {
     id: 'hall-4',
     title: '沿海防灾减灾生态修复三期工程',
+    icon: Gavel,
     price: '¥320.0M',
     description: '涵盖8公里的海岸线红树林种植、海堤加固及生态景观廊道建设，强调生物多样性保护。',
     deadline: '2024.12.28',
@@ -50,10 +54,11 @@ const PROJECTS_EXTENDED = [
   {
     id: 'hall-5',
     title: '智慧政务云平台大数据算力节点扩容',
+    icon: Cpu,
     price: '¥12.5M',
     description: '为满足政务大模型运行需求，对现有云算力中心进行硬件扩容及网络带宽升级。',
     deadline: '2024.11.25',
-    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
     tags: ['算力扩容', '紧急采购'],
     file: '硬件规格说明书.docx',
     fileSize: '5.2 MB'
@@ -61,6 +66,7 @@ const PROJECTS_EXTENDED = [
   {
     id: 'hall-6',
     title: '历史文化街区古建筑修缮与数字化存档',
+    icon: Landmark,
     price: '¥68.4M',
     description: '对34处重点文保单位进行修缮，并利用激光雷达扫描技术建立高精度3D数字档案馆。',
     deadline: '2025.02.15',
@@ -153,7 +159,7 @@ export default function BiddingHall() {
             className="group bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100/50 cursor-pointer"
           >
             {/* ... card content ... */}
-            <div className="relative h-56 overflow-hidden">
+            <div className="relative h-56 overflow-hidden bg-gray-100">
               <img 
                 src={p.image} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
@@ -172,8 +178,13 @@ export default function BiddingHall() {
             </div>
             <div className="p-6 space-y-6">
               <div className="flex justify-between items-start">
-                <h3 className="text-lg font-bold leading-tight flex-1 mr-4">{p.title}</h3>
-                <span className="text-[#0D5EFA] font-black text-xl">{p.price}</span>
+                <div className="flex items-start gap-3 flex-1 min-w-0">
+                  <div className="p-2 bg-blue-50 rounded-xl text-blue-600 mt-0.5 flex-shrink-0">
+                    <p.icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-lg font-bold leading-tight line-clamp-2">{p.title}</h3>
+                </div>
+                <span className="text-[#0D5EFA] font-black text-xl whitespace-nowrap ml-4">{p.price}</span>
               </div>
               <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">{p.description}</p>
               

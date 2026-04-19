@@ -25,7 +25,7 @@ export default function Profile() {
           <div className="relative mb-6">
             <div className="w-32 h-32 rounded-full ring-8 ring-blue-50 overflow-hidden shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=300" 
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300" 
                 className="w-full h-full object-cover" 
                 referrerPolicy="no-referrer"
               />
@@ -34,7 +34,7 @@ export default function Profile() {
               <Verified className="w-4 h-4" />
             </div>
           </div>
-          <h2 className="text-xl font-bold tracking-tight">陈伟杰 (Chen Weijie)</h2>
+          <h2 className="text-xl font-bold tracking-tight">张浩然 (Zhang Haoran)</h2>
           <p className="text-gray-400 text-sm mt-1 uppercase tracking-widest font-bold">机构投标总监</p>
           
           <div className="mt-8 pt-8 border-t border-gray-50 flex justify-around w-full">

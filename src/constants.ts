@@ -9,7 +9,7 @@ export const PROJECTS: Project[] = [
     description: '全规模基础设施开发，包括结构加固及景观亮化工程。',
     status: 'active',
     deadline: '2024.12.15',
-    image: 'https://images.unsplash.com/photo-1545558014-8692077e9b5a?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1590487988256-9ed24133863e?q=80&w=800&auto=format&fit=crop',
   },
   {
     id: '2',
